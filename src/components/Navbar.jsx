@@ -2,65 +2,70 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
-function Navbar({ darkMode, setDarkMode }) {
+const Navbar = ({ toggleDarkMode, isDarkMode }) => {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between h-16">
+    <nav className="bg-white dark:bg-slate-800 shadow-lg fixed w-full z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          {/* Logo Section */}
           <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold text-gray-800 dark:text-white">
-              DocBook
+            <Link to="/" className="flex items-center space-x-2">
+              <span className="text-2xl font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition duration-300">
+                DocApp
+              </span>
             </Link>
           </div>
+
+          {/* Right Section: Theme Toggle and User Actions */}
           <div className="flex items-center space-x-4">
+            {/* Theme Toggle Button */}
             <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+              onClick={toggleDarkMode}
+              className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300"
             >
-              {darkMode ? (
-                <SunIcon className="h-6 w-6 text-yellow-400" />
+              {isDarkMode ? (
+                <SunIcon className="h-6 w-6" />
               ) : (
-                <MoonIcon className="h-6 w-6 text-gray-600" />
+                <MoonIcon className="h-6 w-6" />
               )}
             </button>
+
+            {/* User Actions */}
             {user ? (
-              <>
-                <Link
-                  to={user.role === 'doctor' ? '/doctor-dashboard' : '/patient-dashboard'}
-                  className="text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
-                >
-                  Dashboard
-                </Link>
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-700 dark:text-gray-300 font-medium">
+                  Welcome, {user.name}
+                </span>
                 <button
                   onClick={logout}
-                  className="text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-300"
                 >
                   Logout
                 </button>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="flex items-center space-x-4">
                 <Link
                   to="/login"
-                  className="text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
+                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-lg transition duration-300"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
                 >
                   Sign Up
                 </Link>
-              </>
+              </div>
             )}
           </div>
         </div>
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;

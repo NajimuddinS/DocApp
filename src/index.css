@@ -2,62 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
+}
+
+.dark {
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 15, 23, 42;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
 .rbc-calendar {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
+  min-height: 600px;
 }
 
 .dark .rbc-calendar {
-  background-color: #1f2937;
+  background: rgb(30, 41, 59);
   color: white;
 }
 
-.dark .rbc-today {
-  background-color: #374151;
-}
-
-.dark .rbc-event {
-  background-color: #3b82f6;
-}
-
-.dark .rbc-off-range-bg {
-  background-color: #111827;
+.dark .rbc-toolbar button {
+  color: white;
 }
 
 .dark .rbc-header {
-  color: #e5e7eb;
+  background: rgb(51, 65, 85);
+  color: white;
 }
 
-.react-datepicker {
-  font-family: inherit;
+.dark .rbc-off-range-bg {
+  background: rgb(30, 41, 59);
 }
 
-.dark .react-datepicker {
-  background-color: #1f2937;
-  border-color: #374151;
-}
-
-.dark .react-datepicker__header {
-  background-color: #374151;
-  border-color: #4b5563;
-}
-
-.dark .react-datepicker__current-month,
-.dark .react-datepicker__day-name,
-.dark .react-datepicker__day {
-  color: #e5e7eb;
-}
-
-.dark .react-datepicker__day:hover {
-  background-color: #4b5563;
-}
-
-.dark .react-datepicker__time-container {
-  background-color: #1f2937;
-  border-color: #374151;
-}
-
-.dark .react-datepicker__time-list-item:hover {
-  background-color: #4b5563 !important;
+.dark .rbc-today {
+  background: rgb(51, 65, 85);
 }

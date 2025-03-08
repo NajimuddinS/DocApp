@@ -1,27 +1,20 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [doctors, setDoctors] = useState([
-    {
-      id: 1,
-      name: "Dr. Sarah Johnson",
-      specialization: "Cardiologist",
-      experience: "15 years",
-      address: "123 Medical Center, NY",
-      appointments: []
-    },
-    {
-      id: 2,
-      name: "Dr. Michael Chen",
-      specialization: "Pediatrician",
-      experience: "10 years",
-      address: "456 Health Plaza, NY",
-      appointments: []
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
     }
-  ]);
+  }, [user]);
 
   const login = (userData) => {
     setUser(userData);
@@ -31,23 +24,17 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const addAppointment = (doctorId, appointment) => {
-    setDoctors(doctors.map(doctor => {
-      if (doctor.id === doctorId) {
-        return {
-          ...doctor,
-          appointments: [...doctor.appointments, appointment]
-        };
-      }
-      return doctor;
-    }));
-  };
-
   return (
-    <AuthContext.Provider value={{ user, login, logout, doctors, addAppointment }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
